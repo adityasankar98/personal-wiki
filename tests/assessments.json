@@ -1,0 +1,19 @@
+{
+  "_note": "Human assessments, written after opening every cited passage in vault/raw/. Each applies only to the exact answer text with this hash; if a later run produces a different answer, the card shows 'not yet reviewed' instead of inheriting this verdict.",
+  "test-1": {
+    "answer_hash": "aac3ab42f7b9",
+    "assessment": "**PASS: supported and correctly cited.** Every number is in the cited passages: `Pac-Man DQN README.md` lines 18–19 read “mean score over five fixed evaluation seeds went from 492.0 (untrained) to 1360.0 (trained) — a gain of +868.0”, and the S2 table (lines 166–173) shows the same 492.0 / 1360.0 / +868.0 means. S3 was retrieved but not used, which is correct because it is about limitations. Nothing was added from outside the passages."
+  },
+  "test-2": {
+    "answer_hash": "329f775c1640",
+    "assessment": "**PASS after a documented fix: supported, one cited passage, slightly incomplete.** S2 (`NetworkTracker README.md` lines 317–318) says Postgres ignores RLS for roles holding `BYPASSRLS`, that `neondb_owner` has it, and “while the backend connected as the owner, all four policies above were completely inert: end-to-end testing found that one signed-in user could read *and delete* another user's contacts.” The answer's claim that the owner role bypassed RLS follows directly. It does not name the `BYPASSRLS` attribute or the fix (the `app_user` role), and the question did not ask for the fix. The first-pass reply was a false “Insufficient evidence”; the answer shown came from the quote-first double-check, and the quote was verified word for word in S2 (see the double-check section). This is the one case where the harness, not the model's first attempt, produced the right result. Runs v1–v2 keep the failure."
+  },
+  "test-3": {
+    "answer_hash": "8ad13ec211a2",
+    "assessment": "**PASS: both sources found and both claims correctly attributed.** S1 (`Pac-Man DQN README.md` lines 281–282): “Apple M4, 10 cores, 16 GB, macOS 15.6.1” and “MPS (Apple Silicon GPU)”. S4 (`Custom LLM README.md` line 195): “Hardware: macOS 15.6.1, Apple Silicon, CPU only.” The answer keeps the two apart (MPS for Pac-Man, CPU only for the LLM), which is the blur I predicted it might get wrong. Minor wording: the source says “16 GB”, and the answer's “16 GB of memory” is a fair reading. This passed only after retrieval v2: in v1 the custom-LLM passage ranked 24th and was never shown to the model."
+  },
+  "test-4": {
+    "answer_hash": "ebeb8e78919a",
+    "assessment": "**PASS: correct refusal.** None of the five retrieved passages mentions a grade received. S1 contains the word “grades” in a different sense (“the assignment grades prediction against observation”), a plausible trap for keyword matching, and the model was not misled. The evidence gate did not block this question, because “Pac-Man assignment” matches real passages (as predicted), so the refusal came from the model following rule 4 of `wiki-instructions.md`. My prediction that this test would fail first time was wrong."
+  }
+}

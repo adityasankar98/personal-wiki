@@ -1,0 +1,20 @@
+{
+  "_note": "Human-curated query expansion for BM25. Each group lists words a question and a source may use for the same thing. Expanded terms count at half weight. Added after retrieval-v1 (see evidence/retrieval/). Keep groups general vocabulary, never answers.",
+  "weight": 0.5,
+  "groups": [
+    ["hardware", "device", "machine", "computer", "cpu", "gpu", "mps", "apple", "silicon", "m4", "macos", "laptop"],
+    ["llm", "language model", "gpt", "nanogpt", "transformer"],
+    ["rls", "row level security", "policy", "policies"],
+    ["auth", "authentication", "sign in", "login", "session", "token"],
+    ["contact", "contacts", "people", "person"],
+    ["user", "account", "person"],
+    ["see", "read", "visible", "view"],
+    ["score", "result", "points", "mean"],
+    ["train", "training", "trained", "learn", "fit"],
+    ["test", "eval", "evaluation", "benchmark"],
+    ["dqn", "deep q", "q network", "reinforcement"],
+    ["deploy", "deployment", "hosting", "vercel"],
+    ["database", "postgres", "neon", "sql"],
+    ["mistake", "wrong", "failure", "limitation", "bug"]
+  ]
+}

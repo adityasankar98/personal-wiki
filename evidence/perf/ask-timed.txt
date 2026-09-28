@@ -1,0 +1,33 @@
+mode=ask · model=Gemma 4 E2B-it, 4-bit MLX (local) · execution=local · history=none · persona=none
+[1/4] retrieved 3 passage(s) from vault/raw/ (BM25)
+      S1  vault/raw/Pac-Man DQN README.md:18-29 § Training a Ms. Pac-Man agent with a Deep Q-Network  (score 32.7)
+      S2  vault/raw/Pac-Man DQN README.md:163-176 § What I expected, and what actually happened > All five evaluation scores  (score 23.8)
+      S3  vault/raw/Pac-Man DQN README.md:303-312 § One limitation  (score 19.2)
+[2/4] evidence gate: passed -> building prompt (wiki-instructions.md + passages + question)
+[3/4] generating with local Gemma ...
+
+The mean score for the trained Ms. Pac-Man agent was 1360.0, which was an improvement of +868.0 over the untrained score of 492.0 [S1][S2].
+
+[4/4] citation check: PASS
+      [S1] -> vault/raw/Pac-Man DQN README.md:18-29 § Training a Ms. Pac-Man agent with a Deep Q-Network
+      [S2] -> vault/raw/Pac-Man DQN README.md:163-176 § What I expected, and what actually happened > All five evaluation scores
+      (1.94 s, 1106 prompt tokens, 51 generated, peak 4.2 GB)
+saved: evidence/runs/20260928-123636-ask-what-mean-score-did-the-trained-ms-pac-m.md
+        8.28 real         2.60 user         1.77 sys
+           852606976  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              314601  page reclaims
+                1148  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                6433  voluntary context switches
+               36751  involuntary context switches
+         41678921541  instructions retired
+         16697232961  cycles elapsed
+          4683321160  peak memory footprint

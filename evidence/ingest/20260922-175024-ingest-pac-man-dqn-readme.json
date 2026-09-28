@@ -1,0 +1,45 @@
+{
+  "mode": "ingest",
+  "path": "vault/raw/Pac-Man DQN README.md",
+  "time": "2026-09-22T17:50:24",
+  "runtime": {
+    "execution": "local",
+    "model": "mlx-community/gemma-4-e2b-it-4bit",
+    "model_revision": "238767527555cb75a05732a84dff5d6ba0dd6809",
+    "quantization": "4-bit (MLX)",
+    "runtime": "mlx-vlm 0.7.2, mlx 0.32.2",
+    "python": "3.12.14",
+    "os": "macOS 15.6.1",
+    "chip": "Apple M4",
+    "unified_memory_gb": 16
+  },
+  "elapsed_seconds": 59.9,
+  "gemma_calls": 31,
+  "generation_seconds": 55.7,
+  "counts": {
+    "created": 15,
+    "updated": 0,
+    "unchanged": 0
+  },
+  "new_files": [
+    "vault/wiki/Concepts/Deep Q-Network.md",
+    "vault/wiki/Concepts/Experience Replay.md",
+    "vault/wiki/Concepts/Exploration Rate.md",
+    "vault/wiki/Concepts/Held-Out Evaluation.md",
+    "vault/wiki/Concepts/Model Capacity.md",
+    "vault/wiki/Concepts/Predictions vs Outcomes.md",
+    "vault/wiki/Concepts/Reward Clipping.md",
+    "vault/wiki/Concepts/Row Level Security.md",
+    "vault/wiki/Concepts/Session Token Auth.md",
+    "vault/wiki/Concepts/Word Embeddings.md",
+    "vault/wiki/Projects/Pac-Man DQN Agent.md",
+    "vault/wiki/Tools/Apple Silicon Training.md",
+    "vault/wiki/Tools/Neon Postgres.md",
+    "vault/wiki/Tools/Vercel Deployment.md",
+    "vault/wiki/Tools/nanoGPT Model.md"
+  ],
+  "notes_before": 0,
+  "notes_after": 15,
+  "max_rss_gb": 2.1,
+  "query": "Pac-Man DQN README"
+}

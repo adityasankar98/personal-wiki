@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Launcher: run the harness with the project's own virtualenv from any directory.
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export PYTHONUNBUFFERED=1   # show progress immediately, even when output is piped to a log
+cd "$DIR" && exec "$DIR/.venv/bin/python" -m wikicli "$@"

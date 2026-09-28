@@ -1,0 +1,67 @@
+{
+  "_note": "Answer key for the four ask-mode tests. Lives outside vault/ so the retriever can never find it. Written before retrieval or ask mode existed; predictions are in tests/expectations.md.",
+  "tests": [
+    {
+      "id": "test-1",
+      "kind": "direct, one source",
+      "question": "What mean score did the trained Ms. Pac-Man agent get on the five evaluation seeds, compared with the untrained agent?",
+      "expected_sources": [
+        {
+          "file": "vault/raw/Pac-Man DQN README.md",
+          "must_contain": "Result: mean score over five fixed evaluation seeds went from 492.0"
+        }
+      ],
+      "expected_answer_keywords": [
+        "1360",
+        "492"
+      ],
+      "expect_insufficient": false
+    },
+    {
+      "id": "test-2",
+      "kind": "reworded vs the source",
+      "question": "Why was one signed-in user of my networking app initially able to see and delete another person's contacts?",
+      "expected_sources": [
+        {
+          "file": "vault/raw/NetworkTracker README.md",
+          "must_contain": "Postgres ignores RLS entirely for any role holding the"
+        }
+      ],
+      "expected_answer_keywords": [
+        "bypass"
+      ],
+      "expect_insufficient": false
+    },
+    {
+      "id": "test-3",
+      "kind": "connects two sources",
+      "question": "What hardware and device did I use to train the Pac-Man agent and the custom language model?",
+      "expected_sources": [
+        {
+          "file": "vault/raw/Pac-Man DQN README.md",
+          "must_contain": "Apple M4, 10 cores, 16 GB"
+        },
+        {
+          "file": "vault/raw/Custom LLM README.md",
+          "must_contain": "Hardware: macOS 15.6.1, Apple Silicon, CPU only"
+        }
+      ],
+      "expected_answer_keywords": [
+        "M4",
+        "CPU"
+      ],
+      "expect_insufficient": false
+    },
+    {
+      "id": "test-4",
+      "kind": "unsupported (answer not in the wiki)",
+      "question": "What grade did I receive for the Pac-Man assignment?",
+      "expected_sources": [],
+      "expected_answer_keywords": [],
+      "expect_insufficient": true
+    }
+  ],
+  "_changes": [
+    "After run v2: test-2's expected keyword changed from 'BYPASSRLS' to 'bypass'. The fact being checked is that the owner role bypassed RLS; an answer saying 'bypassed Row Level Security' states it correctly without the exact attribute name. The expected passage and question are unchanged."
+  ]
+}

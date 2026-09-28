@@ -1,0 +1,31 @@
+{
+  "mode": "ingest",
+  "path": "vault/raw/NetworkTracker README.md",
+  "time": "2026-09-22T17:51:24",
+  "runtime": {
+    "execution": "local",
+    "model": "mlx-community/gemma-4-e2b-it-4bit",
+    "model_revision": "238767527555cb75a05732a84dff5d6ba0dd6809",
+    "quantization": "4-bit (MLX)",
+    "runtime": "mlx-vlm 0.7.2, mlx 0.32.2",
+    "python": "3.12.14",
+    "os": "macOS 15.6.1",
+    "chip": "Apple M4",
+    "unified_memory_gb": 16
+  },
+  "elapsed_seconds": 36.6,
+  "gemma_calls": 21,
+  "generation_seconds": 32.4,
+  "counts": {
+    "created": 1,
+    "updated": 3,
+    "unchanged": 0
+  },
+  "new_files": [
+    "vault/wiki/Projects/NetworkTracker App.md"
+  ],
+  "notes_before": 15,
+  "notes_after": 16,
+  "max_rss_gb": 2.42,
+  "query": "NetworkTracker README"
+}

@@ -1,0 +1,57 @@
+{
+  "mode": "search",
+  "query": "reward clipping",
+  "time": "2026-09-28T15:25:55",
+  "runtime": {
+    "execution": "local",
+    "model": null,
+    "model_revision": null,
+    "quantization": null,
+    "runtime": "mlx-vlm 0.7.2, mlx 0.32.2",
+    "python": "3.12.14",
+    "os": "macOS 15.6.1",
+    "chip": "Apple M4",
+    "unified_memory_gb": 16
+  },
+  "scope": [
+    "raw"
+  ],
+  "passages": [
+    {
+      "id": "S1",
+      "source": "vault/raw/Pac-Man DQN README.md",
+      "section": "One limitation",
+      "lines": [
+        303,
+        312
+      ],
+      "score": 7.204,
+      "coverage": 1.0,
+      "text": "The direct cause is in the code: **training rewards are clipped to [−1, +1]**. To the gradient, a\n10-point pellet and a 1,600-point ghost chain are the same size. The agent is therefore never taught\nthat ghosts are worth two orders of magnitude more than pellets — reward clipping stabilises\ntraining at the cost of making the agent value-blind to exactly the tactic that separates a good\nMs. Pac-Man player from a mediocre one.\n\nA second, structural limitation worth naming: **five evaluation games is a very small sample.** The\nsame agent scored between 360 and 2,250 on single games during training. Five games with fixed seeds\nmakes runs comparable, but it is not a reliable estimate of true skill, and the ±868 gain should be\nread as \"clearly improved,\" not as a precise measurement."
+    },
+    {
+      "id": "S2",
+      "source": "vault/raw/Pac-Man DQN README.md",
+      "section": "What the agent actually sees, does, and is paid for",
+      "lines": [
+        129,
+        136
+      ],
+      "score": 7.013,
+      "coverage": 1.0,
+      "text": "**Rewards — game points.** The reward is whatever the game's own scoreboard awards: pellets, power\npellets, eaten ghosts, fruit. Two details matter. For *learning*, rewards are clipped to [−1, +1],\nso a 200-point ghost and a 10-point pellet look the same size to the gradient — this keeps the\nupdate scale stable across games but means the agent is not taught that ghosts are worth twenty\npellets. For *reporting*, every score in this README is the raw, unclipped game score.\n\nThe agent is never told the rules. It is not told what a ghost is, that pellets are good, or that\ntouching a ghost ends a life. All of that has to be inferred from pixels and points."
+    },
+    {
+      "id": "S3",
+      "source": "vault/raw/Pac-Man DQN README.md",
+      "section": "My three choices > Learning rate — 0.00025",
+      "lines": [
+        86,
+        92
+      ],
+      "score": 2.7,
+      "coverage": 0.5,
+      "text": "0.00025 is the rate used in the original DQN work, and is 2.5× the notebook's reference value. The\nargument for the larger step is the update budget: this run performs on the order of 10^5 gradient\nupdates, not the 10^7 the method was designed around, so each update has to carry more weight.\n\nThe risk of a larger step is divergence, but the notebook already mitigates it: Huber\n(`smooth_l1_loss`) instead of squared error, gradient-norm clipping at 10.0, a target network synced\nevery 1,000 decisions, and an explicit error if the loss ever becomes non-finite."
+    }
+  ]
+}

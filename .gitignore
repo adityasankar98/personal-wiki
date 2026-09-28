@@ -1,0 +1,22 @@
+# Python / machine files (regenerable; kept outside the vault)
+.venv/
+__pycache__/
+*.pyc
+data/
+
+# Private documents and anything derived from them: never published
+vault/raw/private/
+vault/wiki/Career/
+vault/private-index.md
+evidence/private/
+
+# Obsidian per-user state (keep the shared config, drop window layout / cache)
+vault/.obsidian/workspace*.json
+vault/.obsidian/cache
+vault/.trash/
+
+# Model weights never belong in the repo
+*.safetensors
+*.gguf
+.env
+.DS_Store

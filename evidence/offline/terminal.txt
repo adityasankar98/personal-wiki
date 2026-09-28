@@ -1,0 +1,393 @@
+=== Offline demo · 2026-09-28 15:24:58 PDT
+=== Network proof
+Wi-Fi Power (en0): Off
+default route: PRESENT
+curl https://huggingface.co -> FAILED as expected: curl: (6) Could not resolve host: huggingface.co
+
+=== Device
+ProductName:		macOS ProductVersion:		15.6.1 BuildVersion:		24G90 
+chip: Apple M4 · cores: 10 · unified memory: 16 GB
+memory now: System-wide memory free percentage: 67%
+free disk: 31Gi
+python: Python 3.12.14 · mlx-vlm 0.7.2
+
+[1m$ ./wiki --help[0m
+usage: wiki [-h] COMMAND ...
+
+Personal wiki CLI — talk to your own notes with a local Gemma model, offline.
+
+Model (default, local): mlx-community/gemma-4-e2b-it-4bit @ 238767527555  (4-bit MLX, via mlx-vlm)
+Vault (open in Obsidian): vault/   originals: vault/raw/   generated notes: vault/wiki/
+
+positional arguments:
+  COMMAND
+    ingest    ingest sources into wiki notes
+    search    show matching original passages (no
+              model)
+    ask       cited factual answer from your
+              sources
+    chat      personal assistant with
+              conversation context
+    eval      run the four ask-mode tests
+    check     links, names, hashes, secrets
+    help      show this help
+
+options:
+  -h, --help  show this help message and exit
+
+commands:
+  ingest [PATH]        read sources in vault/raw/, write/update linked wiki notes, rebuild the index
+  search "QUERY"       show original matching passages + paths. No answer, no model.
+  ask "QUESTION"       standalone factual answer with citations, or "Insufficient evidence"
+  chat                 Scout, a personal assistant with conversation memory; looks up notes when needed
+  eval                 run the four fixed ask-mode tests (tests/questions.json) and write evidence cards
+  check                verify links, note names, source hashes, and scan for secrets / private files
+  help                 this message
+
+examples:
+  ./wiki ingest vault/raw
+  ./wiki ingest "vault/raw/Pac-Man DQN README.md"
+  ./wiki ingest vault/raw/private/resume.pdf --title "Resume" --folder Career --private
+  ./wiki search "reward clipping"
+  ./wiki ask "Why did the Pac-Man loss go up?" --mode local --save
+  ./wiki chat --transcript evidence/chat-demo.md
+
+configuration:
+  wikicli/config.py            paths, model id + revision, generation settings, retrieval budgets
+  instructions/persona.md      chat personality + capabilities      (chat only)
+  instructions/wiki-instructions.md   research rules                 (ask only)
+  instructions/ingest-instructions.md note-writing rules             (ingest only)
+  wiki-concepts.json           curated concept notes and their keywords
+  retrieval-synonyms.json      query expansion groups for BM25
+
+required inputs: source files (.md .txt .pdf .docx) inside vault/raw/; the model in the local
+Hugging Face cache (see README "Setup"). Everything runs offline; --mode online is not implemented.
+
+[1m$ ./wiki ingest vault/raw/Pac-Man DQN README.md[0m
+mode=ingest · model=Gemma 4 E2B-it, 4-bit MLX (local) · execution=local · 1 source(s)
+
+== vault/raw/Pac-Man DQN README.md  (2996 words; sha256 795c15897638)
+   section “Training a Ms. Pac-Man agent with a Deep Q-Network”: 3 point(s)
+   section “How to open and run it”: 3 point(s)
+   section “My three choices”: 3 point(s)
+   section “What the agent actually sees, does, and is paid for”: 3 point(s)
+   section “What I expected, and what actually happened”: 3 point(s)
+   section “The run that produced these numbers”: 3 point(s)
+   section “One limitation”: 3 point(s)
+   section “My next experiment”: 3 point(s)
+   section “Reproducing this exact run”: 3 point(s)
+   section “Where the large files are”: 3 point(s)
+   linked concepts: Deep Q-Network, Experience Replay, Reward Clipping, Exploration Rate, Held-Out Evaluation, Predictions vs Outcomes, Apple Silicon Training
+   applied review correction: misleading: bias comes from choosing the max of 81 noisy estimates, not from held-out seeds (source lines 263-266)
+   applied review correction: misleading: the source says the loss IS a temporal-difference error, which is why a rising loss is not a bad sign (lines 153-159)
+   applied review correction: garbled menu path (lines 36-37)
+   applied review correction: the proposal is an annealing schedule, stated as a next experiment (lines 316-317)
+   applied review correction: it is the README's prediction, not a test result (lines 326-329)
+   applied review correction: the next experiment is a proposal, not something that was done (lines 316-317)
+   applied review correction: vague: which seeds (lines 265-266)
+   -> updated: vault/wiki/Projects/Pac-Man DQN Agent.md
+
+== concept notes
+   applied review correction: misleading: the source says the loss IS a temporal-difference error, which is why a rising loss is not a bad sign (lines 153-159)
+   -> unchanged: vault/wiki/Concepts/Deep Q-Network.md
+   applied review correction: off-topic: these two sentences are about exploration, not replay (they belong to Exploration Rate)
+   -> unchanged: vault/wiki/Concepts/Experience Replay.md
+   -> unchanged: vault/wiki/Concepts/Reward Clipping.md
+   applied review correction: the next experiment is a proposal, not something that was done (lines 316-317)
+   applied review correction: states a proposed experiment as if done; garbled clause about the 0.20 default (lines 62-67, 316-317)
+   applied review correction: garbled clause about the 0.20 default (lines 62-65)
+   -> unchanged: vault/wiki/Concepts/Exploration Rate.md
+   applied review correction: vague: which seeds (lines 265-266)
+   applied review correction: the checks keep eval prompts out of the corpus; the suite does not 'include' them (lines 298-312)
+   -> unchanged: vault/wiki/Concepts/Held-Out Evaluation.md
+   -> unchanged: vault/wiki/Concepts/Predictions vs Outcomes.md
+   -> unchanged: vault/wiki/Tools/Apple Silicon Training.md
+
+ingest done in 43.9 s · 26 Gemma calls (39.1 s generating) · notes: {'created': 0, 'updated': 1, 'unchanged': 7} · new files: 0 · wiki notes before/after: 17/17 · index: 253 passages · peak memory 0.82 GB RSS
+saved: evidence/ingest/20260928-152542-ingest-pac-man-dqn-readme.md
+
+[1m$ ./wiki eval --label offline[0m
+
+===== test-1 (direct, one source) =====
+mode=ask · model=Gemma 4 E2B-it, 4-bit MLX (local) · execution=local · history=none · persona=none
+[1/4] retrieved 3 passage(s) from vault/raw/ (BM25)
+      S1  vault/raw/Pac-Man DQN README.md:18-29 § Training a Ms. Pac-Man agent with a Deep Q-Network  (score 32.7)
+      S2  vault/raw/Pac-Man DQN README.md:163-176 § What I expected, and what actually happened > All five evaluation scores  (score 23.8)
+      S3  vault/raw/Pac-Man DQN README.md:303-312 § One limitation  (score 19.2)
+[2/4] evidence gate: passed -> building prompt (wiki-instructions.md + passages + question)
+[3/4] generating with local Gemma ...
+
+The mean score for the trained Ms. Pac-Man agent was 1360.0, which was an improvement of +868.0 over the untrained score of 492.0 [S1][S2].
+
+[4/4] citation check: PASS
+      [S1] -> vault/raw/Pac-Man DQN README.md:18-29 § Training a Ms. Pac-Man agent with a Deep Q-Network
+      [S2] -> vault/raw/Pac-Man DQN README.md:163-176 § What I expected, and what actually happened > All five evaluation scores
+      (1.78 s, 1106 prompt tokens, 51 generated, peak 4.2 GB)
+
+retrieval PASS · answer PASS (expected facts present, citations valid)
+
+===== test-2 (reworded vs the source) =====
+mode=ask · model=Gemma 4 E2B-it, 4-bit MLX (local) · execution=local · history=none · persona=none
+[1/4] retrieved 3 passage(s) from vault/raw/ (BM25)
+      S1  vault/raw/NetworkTracker README.md:3-13 § NetworkTracker — Secure Networking Tracker  (score 27.2)
+      S2  vault/raw/NetworkTracker README.md:317-332 § Security: Authentication and RLS Ownership > The `app_user` role — why RLS needs it  (score 22.4)
+      S3  vault/raw/NetworkTracker README.md:186-193 § Local Setup > 3. Create the application role  (score 20.7)
+[2/4] evidence gate: passed -> building prompt (wiki-instructions.md + passages + question)
+[3/4] generating with local Gemma ...
+
+Insufficient evidence: The provided passages do not explain why one signed-in user could see and delete another user's contacts.
+
+[3b] refused despite a strong match -> quote-first double-check ...
+     accepted: 1 quote(s) verified verbatim in the cited passage
+
+This occurred because the backend connected as the owner role, which bypassed Row Level Security policies, allowing one signed-in user to read and delete another user's contacts [S2].
+
+
+[4/4] citation check: PASS
+      [S2] -> vault/raw/NetworkTracker README.md:317-332 § Security: Authentication and RLS Ownership > The `app_user` role — why RLS needs it
+      (2.86 s, 1268 prompt tokens, 71 generated, peak 4.3 GB)
+
+retrieval PASS · answer PASS (expected facts present, citations valid)
+
+===== test-3 (connects two sources) =====
+mode=ask · model=Gemma 4 E2B-it, 4-bit MLX (local) · execution=local · history=none · persona=none
+[1/4] retrieved 5 passage(s) from vault/raw/ (BM25)
+      S1  vault/raw/Pac-Man DQN README.md:273-291 § The run that produced these numbers  (score 16.3)
+      S2  vault/raw/Pac-Man DQN README.md:334-338 § Reproducing this exact run  (score 10.3)
+      S3  vault/raw/Custom LLM README.md:3-21 § Building a Custom LLM — Class 4  (score 9.8)
+      S4  vault/raw/Custom LLM README.md:182-198 § 3. The experiments > Experiments 3–5 — the follow-ups  (score 9.6)
+      S5  vault/raw/Custom LLM README.md:729-750 § 9. Reproducing this > Layout  (score 9.0)
+[2/4] evidence gate: passed -> building prompt (wiki-instructions.md + passages + question)
+[3/4] generating with local Gemma ...
+
+The hardware used for the Pac-Man agent was an Apple M4 with 10 cores and 16 GB of memory on macOS 15.6.1 [S1]. The device used for the Pac-Man agent was MPS (Apple Silicon GPU) [S1]. For the custom language model experiments, the hardware was macOS 15.6.1 and Apple Silicon, CPU only [S4].
+
+[4/4] citation check: PASS
+      [S1] -> vault/raw/Pac-Man DQN README.md:273-291 § The run that produced these numbers
+      [S4] -> vault/raw/Custom LLM README.md:182-198 § 3. The experiments > Experiments 3–5 — the follow-ups
+      (2.61 s, 2044 prompt tokens, 88 generated, peak 4.32 GB)
+
+retrieval PASS · answer PASS (expected facts present, citations valid)
+
+===== test-4 (unsupported (answer not in the wiki)) =====
+mode=ask · model=Gemma 4 E2B-it, 4-bit MLX (local) · execution=local · history=none · persona=none
+[1/4] retrieved 5 passage(s) from vault/raw/ (BM25)
+      S1  vault/raw/Custom LLM README.md:128-136 § 2. Where my predictions were wrong  (score 8.3)
+      S2  vault/raw/Pac-Man DQN README.md:342-345 § Where the large files are  (score 8.1)
+      S3  vault/raw/Pac-Man DQN README.md:153-159 § What I expected, and what actually happened  (score 5.8)
+      S4  vault/raw/Pac-Man DQN README.md:3-16 § Training a Ms. Pac-Man agent with a Deep Q-Network  (score 5.4)
+      S5  vault/raw/Custom LLM README.md:719-725 § 9. Reproducing this  (score 3.8)
+[2/4] evidence gate: passed -> building prompt (wiki-instructions.md + passages + question)
+[3/4] generating with local Gemma ...
+
+Insufficient evidence: the passages do not state what grade was received for the Pac-Man assignment.
+
+[4/4] citation check: PASS (insufficient-evidence reply; no citations needed)
+      (1.02 s, 1263 prompt tokens, 20 generated, peak 4.32 GB)
+
+retrieval PASS · answer PASS (expected an insufficient-evidence reply: got one)
+
+saved: evidence/ask/20260928-152543-offline/
+
+[1m$ ./wiki search reward clipping --save[0m
+mode=search · retrieval=BM25 (local) · model=not used · scope=raw
+query: "reward clipping"  ->  3 passage(s)
+
+[1] vault/raw/Pac-Man DQN README.md  lines 303-312
+    § One limitation   (BM25 7.20, term coverage 1.00)
+    | The direct cause is in the code: **training rewards are clipped to [−1, +1]**. To the gradient, a
+    | 10-point pellet and a 1,600-point ghost chain are the same size. The agent is therefore never taught
+    | that ghosts are worth two orders of magnitude more than pellets — reward clipping stabilises
+    | training at the cost of making the agent value-blind to exactly the tactic that separates a good
+    | Ms. Pac-Man player from a mediocre one.
+    | 
+    | A second, structural limitation worth naming: **five evaluation games is a very small sample.** The
+    | same agent scored between 360 and 2,250 on single games during training. Five games with fixed seeds
+    | makes runs comparable, but it is not a reliable estimate of true skill, and the ±868 gain should be
+    | read as "clearly improved," not as a precise measurement.
+
+[2] vault/raw/Pac-Man DQN README.md  lines 129-136
+    § What the agent actually sees, does, and is paid for   (BM25 7.01, term coverage 1.00)
+    | **Rewards — game points.** The reward is whatever the game's own scoreboard awards: pellets, power
+    | pellets, eaten ghosts, fruit. Two details matter. For *learning*, rewards are clipped to [−1, +1],
+    | so a 200-point ghost and a 10-point pellet look the same size to the gradient — this keeps the
+    | update scale stable across games but means the agent is not taught that ghosts are worth twenty
+    | pellets. For *reporting*, every score in this README is the raw, unclipped game score.
+    | 
+    | The agent is never told the rules. It is not told what a ghost is, that pellets are good, or that
+    | touching a ghost ends a life. All of that has to be inferred from pixels and points.
+
+[3] vault/raw/Pac-Man DQN README.md  lines 86-92
+    § My three choices > Learning rate — 0.00025   (BM25 2.70, term coverage 0.50)
+    | 0.00025 is the rate used in the original DQN work, and is 2.5× the notebook's reference value. The
+    | argument for the larger step is the update budget: this run performs on the order of 10^5 gradient
+    | updates, not the 10^7 the method was designed around, so each update has to carry more weight.
+    | 
+    | The risk of a larger step is divergence, but the notebook already mitigates it: Huber
+    | (`smooth_l1_loss`) instead of squared error, gradient-norm clipping at 10.0, a target network synced
+    | every 1,000 decisions, and an explicit error if the loss ever becomes non-finite.
+
+saved: evidence/runs/20260928-152555-search-reward-clipping.md
+
+[1m$ ./wiki search workshop catering budget[0m
+mode=search · retrieval=BM25 (local) · model=not used · scope=raw
+query: "workshop catering budget"  ->  4 passage(s)
+
+[1] vault/raw/Custom LLM README.md  lines 59-61
+    § 1. Headline results > The central finding: corpus work hit a ceiling that only capacity broke   (BM25 4.27, term coverage 0.33)
+    | **This is why E1 → E2 is the honest headline and 47/48 is not.** E5 is tuned: its architecture,
+    | budget and corpus were all chosen after looking at which cases failed. E2 is the clean
+    | measurement — extension material written once from the category list, measured once.
+
+[2] vault/raw/Pac-Man DQN README.md  lines 86-92
+    § My three choices > Learning rate — 0.00025   (BM25 3.24, term coverage 0.33)
+    | 0.00025 is the rate used in the original DQN work, and is 2.5× the notebook's reference value. The
+    | argument for the larger step is the update budget: this run performs on the order of 10^5 gradient
+    | updates, not the 10^7 the method was designed around, so each update has to carry more weight.
+    | 
+    | The risk of a larger step is divergence, but the notebook already mitigates it: Huber
+    | (`smooth_l1_loss`) instead of squared error, gradient-norm clipping at 10.0, a target network synced
+    | every 1,000 decisions, and an explicit error if the loss ever becomes non-finite.
+
+[3] vault/raw/Custom LLM README.md  lines 782-789
+    § 10. Limitation and next experiment   (BM25 3.20, term coverage 0.33)
+    | **Two limitations on the numbers themselves.** First, **every score here comes from a suite that
+    | guided the corpus design**, and E5 additionally had its architecture and budget chosen after
+    | seeing which cases failed. The honest description is a *development benchmark*; 47/48 means
+    | "the taught patterns were learned", not "the model understands language". E1 → E2 is the
+    | cleanest measurement in the project and 44/48 is the number I would defend. Second, the
+    | constrained score consistently overstates the model: `opposites` scores 3/3 while the chat
+    | interface answers `the opposite of cold is` with `is opposites .`, and `negation` scored 3/3 in
+    | E2 while free generation produced `the box is not yellow . it is green . the box is red .`
+
+[4] vault/raw/Custom LLM README.md  lines 170-180
+    § 3. The experiments > Experiments 3–5 — the follow-ups   (BM25 2.91, term coverage 0.33)
+    | **E3** added teaching material for the three frames E2 had never shown the model (see §6), at
+    | identical settings. **E4** closed two further gaps found the same way: `the {plural} are …`
+    | (only `the {plural} were …` had been taught, which is why `lang_26` failed) and four more
+    | vehicle types so the before→later rule had more distinct pairs to generalize from. Both ran at
+    | 2 layers / 3,000 steps, so **corpus is the only variable across E2, E3 and E4** — and all three
+    | land at 44, 42, 44.
+    | 
+    | **E5** changes the model rather than the data: `N_LAYER` 2 → 4 and 6,000 steps on E4's corpus.
+    | Changing two settings at once is a deliberate compromise — the larger model needs a longer
+    | budget to converge — so E5 should be read as "more capacity, fairly trained", not as an
+    | isolation of depth alone.
+
+
+=== Chat mode checks (scripted input, fresh process)
+mode=chat · assistant=Scout (instructions/persona.md) · model=Gemma 4 E2B-it, 4-bit MLX (local) · execution=local
+loading model ...
+Scout is ready. Type /help for commands, /exit to quit.
+
+you> what can we do?
+[retrieval: no: question about the assistant itself]
+scout> Hey! I'm Scout, your study and project assistant. I can help you brainstorm, draft, outline, plan, or rework text.
+
+Basically, I'm here to make your work smoother. What are we tackling first? 😊
+   (1.5 s, 631 prompt tokens)
+
+you> what can you help me with?
+[retrieval: no: question about the assistant itself]
+scout> I can help you with a few main things:
+
+*   **Drafting & Planning:** Brainstorming, writing first drafts, creating outlines, planning out study sessions, or structuring project ideas.
+*   **Editing & Formatting:** Taking something you wrote and reworking it—whether you need it to be shorter, more formal, or just better organized (like turning text into bullet points).
+*   **Wiki Lookups:** I can pull facts and details from your personal course notes on projects like the NetworkTracker, the DQN agent, or nanoGPT.
+
+Just tell me what you need to work on!
+   (2.46 s, 697 prompt tokens)
+
+you> Draft a 3-step plan to study for my next class.
+[retrieval: no: a statement or request for ideas, not a question about facts]
+scout> Here is a draft for a 3-step study plan.
+
+**Assumption:** I'm assuming the class is heavy on theoretical concepts and requires focused review and practice problems.
+
+1.  **Review Core Concepts (Day 1):** Spend 2 hours reviewing all lecture slides and textbook summaries. Focus only on definitions and core principles.
+2.  **Active Recall Session (Day 2):** Spend 3 hours working through practice problems or conceptual questions. Don't just read; actively try to explain the concepts out loud.
+3.  **Application & Mock Test (Day 3):** Spend the final session applying everything by trying to solve a full problem set or mock exam under timed conditions.
+
+Let me know if you want me to tweak the tone or focus on a specific topic!
+   (3.26 s, 875 prompt tokens)
+
+you> make that shorter
+[retrieval: no: follow-up on the conversation]
+scout> Here is the shorter version:
+
+**3-Step Study Plan:**
+
+1.  **Review:** Go over all lecture material (definitions only).
+2.  **Practice:** Work through problems actively (explain concepts out loud).
+3.  **Test:** Apply everything in a timed mock test.
+
+Concise and ready to go! 👍
+   (1.74 s, 1024 prompt tokens)
+
+you> /save study plan
+(saved draft to evidence/chat-saves/20260928-152609-study-plan.md)
+
+you> By the way, my Pac-Man agent won a class prize.
+[retrieval: no: a statement or request for ideas, not a question about facts]
+scout> That's awesome news! Congrats on the win! 🎉
+
+I don't have that specific fact saved in my current notes, so I can't confirm details about it. If you have any documentation on that achievement, feel free to save it for later! 😉
+   (1.56 s, 1119 prompt tokens)
+
+you> What learning rate did I use for the Pac-Man agent?
+[retrieval: yes: asks about his work and the notes match strongly (BM25 9.3)]
+   S1 vault/raw/Pac-Man DQN README.md:54-58 § My three choices
+   S2 vault/raw/Pac-Man DQN README.md:86-92 § My three choices > Learning rate — 0.00025
+   S3 vault/raw/Pac-Man DQN README.md:18-29 § Training a Ms. Pac-Man agent with a Deep Q-Network
+   S4 vault/raw/Custom LLM README.md:462-482 § 7. How it learns — traced through actual numbers
+   S5 vault/raw/Custom LLM README.md:591-595 § 7. How it learns — traced through actual numbers > Loss
+scout> The learning rate used for the Pac-Man agent was **0.00025**. This is 2.5 times the reference value from the notebook [S2].
+   (1.97 s, 2303 prompt tokens)
+
+you> /notes reward clipping
+[retrieval: yes: /notes requested a lookup]
+   S1 vault/raw/Pac-Man DQN README.md:303-312 § One limitation
+   S2 vault/raw/Pac-Man DQN README.md:129-136 § What the agent actually sees, does, and is paid for
+   S3 vault/raw/Pac-Man DQN README.md:86-92 § My three choices > Learning rate — 0.00025
+scout> Here are the details regarding reward clipping from the passages:
+
+*   **Reward Clipping:** Training rewards are clipped to the range of \[-1, +1] [S1].
+*   **Effect of Clipping:** This clipping means that a 10-point pellet and a 1,600-point ghost chain are treated as the same size by the gradient [S1].
+*   **Learning Implication:** Because of this clipping, the agent is not taught that ghosts are worth two orders of magnitude more than pellets [S1].
+*   **Reporting:** For reporting purposes, every score in the README is the raw, unclipped game score [S2].
+*   **Learning Details:** The agent is never explicitly told the rules—such as what a ghost is, or that pellets are good—it must be inferred from pixels and points [S2].
+   (4.2 s, 1929 prompt tokens)
+
+you> /sources
+  S1 vault/raw/Pac-Man DQN README.md:303-312 § One limitation
+  S2 vault/raw/Pac-Man DQN README.md:129-136 § What the agent actually sees, does, and is paid for
+  S3 vault/raw/Pac-Man DQN README.md:86-92 § My three choices > Learning rate — 0.00025
+
+you> /exit
+bye.
+transcript: evidence/offline/chat-mode-checks.md
+
+=== Ask must ignore the chat-only claim (fresh process, no history)
+
+[1m$ ./wiki ask Did my Pac-Man agent win a class prize? --save[0m
+mode=ask · model=Gemma 4 E2B-it, 4-bit MLX (local) · execution=local · history=none · persona=none
+[1/4] retrieved 5 passage(s) from vault/raw/ (BM25)
+      S1  vault/raw/Pac-Man DQN README.md:3-16 § Training a Ms. Pac-Man agent with a Deep Q-Network  (score 6.9)
+      S2  vault/raw/Pac-Man DQN README.md:18-29 § Training a Ms. Pac-Man agent with a Deep Q-Network  (score 6.0)
+      S3  vault/raw/Pac-Man DQN README.md:303-312 § One limitation  (score 6.0)
+      S4  vault/raw/Custom LLM README.md:3-21 § Building a Custom LLM — Class 4  (score 2.3)
+      S5  vault/raw/NetworkTracker README.md:104-114 § Technology Stack  (score 2.2)
+[2/4] evidence gate: passed -> building prompt (wiki-instructions.md + passages + question)
+[3/4] generating with local Gemma ...
+
+Insufficient evidence: no information is provided regarding whether the Pac-Man agent won a class prize.
+
+[4/4] citation check: PASS (insufficient-evidence reply; no citations needed)
+      (1.66 s, 1798 prompt tokens, 20 generated, peak 4.34 GB)
+saved: evidence/runs/20260928-152623-ask-did-my-pac-man-agent-win-a-class-prize.md
+
+[1m$ ./wiki check[0m
+checked 274 links in 17 wiki notes + index/sources, 3 sources, 139 publishable files
+RESULT: PASS (0 errors, 0 warnings)
+
+=== Offline demo finished · 15:26:23

@@ -1,0 +1,142 @@
+{
+  "mode": "ask",
+  "execution": "local",
+  "question": "What hardware and device did I use to train the Pac-Man agent and the custom language model?",
+  "time": "2026-09-22T17:44:21",
+  "passages": [
+    {
+      "id": "S1",
+      "source": "vault/raw/Pac-Man DQN README.md",
+      "section": "The run that produced these numbers",
+      "lines": [
+        273,
+        291
+      ],
+      "score": 20.254,
+      "coverage": 0.56,
+      "text": "| | |\n|---|---|\n| Status | completed (not interrupted) |\n| Completed episodes | **2,000 / 2,000** |\n| Total decisions | **1,369,832** (~5.5M emulator frames) |\n| Learning updates | **342,209** |\n| Elapsed training time | **108.5 min** (6,512 s, including periodic demos) |\n| Total notebook wall-clock | 114.0 min (includes baseline eval, 81-checkpoint selection, final eval) |\n| Hardware | Apple M4, 10 cores, 16 GB, macOS 15.6.1 |\n| Device | **MPS** (Apple Silicon GPU) |\n| Python | 3.12.14 |\n| Key packages | torch 2.14.0, gymnasium 1.3.0, ale-py 0.11.2, numpy 2.5.3 |\n\nEvidence: [`results/training_summary.json`](results/training_summary.json) ·\n[`results/training.csv`](results/training.csv) (one row per episode) ·\n[`results/config.json`](results/config.json) ·\n[`results/comparison.json`](results/comparison.json) ·\n[`results/baseline.json`](results/baseline.json) ·\n[`results/demo_scores.json`](results/demo_scores.json)"
+    },
+    {
+      "id": "S2",
+      "source": "vault/raw/Pac-Man DQN README.md",
+      "section": "Reproducing this exact run",
+      "lines": [
+        334,
+        338
+      ],
+      "score": 12.08,
+      "coverage": 0.44,
+      "text": "Actual run parameters and hardware are in [`results/config.json`](results/config.json); the\nper-episode log is in [`results/training.csv`](results/training.csv).\n\nNote that exact reproduction is not guaranteed even with the fixed seed: MPS and CUDA kernels\nschedule floating-point work non-deterministically, so a rerun will land near, not on, these numbers."
+    },
+    {
+      "id": "S3",
+      "source": "vault/raw/Custom LLM README.md",
+      "section": "3. The experiments > Experiments 3–5 — the follow-ups",
+      "lines": [
+        182,
+        198
+      ],
+      "score": 11.402,
+      "coverage": 0.33,
+      "text": "| | E4 (2 layers) | E5 (4 layers) |\n|---|---|---|\n| Unique passages | 9,704 (train 8,733 / val 971) | 10,520 (train 9,468 / val 1,052) |\n| Vocabulary | 433 | 433 |\n| Parameters | 130,880 | **230,848** |\n| Steps / elapsed | 3,000 / 12 s | 6,000 / 38 s |\n| Unknown-token rate | training 0.0%, held-out 0.009% | training 0.0%, held-out 0.009% |\n| Score | 44/48 | **47/48** |\n\nE4 was run from the script rather than the notebook, since it is an isolation control; its full\nartifacts (config, corpus, both eval result sets, weights) are in its run folder exactly as for\nthe others. E1, E2, E3 and E5 each have an executed notebook.\n\nHardware: macOS 15.6.1, Apple Silicon, CPU only. Python 3.12.14, PyTorch 2.14.0. **No run was\ninterrupted; every run completed its full step budget** —\n[E1 training_summary.json](llm_runs/20260921T220602_231016Z/training_summary.json) ·\n[E2 training_summary.json](llm_runs/20260921T220633_918630Z/training_summary.json)."
+    },
+    {
+      "id": "S4",
+      "source": "vault/raw/Custom LLM README.md",
+      "section": "9. Reproducing this > Layout",
+      "lines": [
+        729,
+        750
+      ],
+      "score": 10.73,
+      "coverage": 0.44,
+      "text": "| Path | |\n|---|---|\n| `custom_llm.py` | notebook source; `build_notebook.py` compiles it to `.ipynb` |\n| `build_corpus.py` | generates the extension corpus with the leakage filter |\n| `verify_corpus.py` | read-only pre-flight check (this is the important one) |\n| `corpus/` | teaching material only |\n| `evals/` | the fixed 48-case suite — never a training input |\n| `llm_runs/` | per-run artifacts, weights, eval results, ZIPs |\n| `results/` | standalone eval reruns and chat evidence |\n\n`run_evals.py`, `chat.py`, `nanogpt_model.py` and `evals/language_evals.json` are supplied and\n**unmodified** — the notebook verifies all four against pinned SHA-256 hashes on every run and\nrefuses to start if any byte changed.\n\n**Attribution.** The transformer is Karpathy's nanoGPT at commit `3adf61e`, used under its MIT\nlicense, retained verbatim in [`NANOGPT_LICENSE`](NANOGPT_LICENSE). The notebook scaffold, eval\nsuite, runner and chat interface come from the course\n[starter repository](https://github.com/pepealonso95/custom-llm). My own contributions are\n`build_corpus.py`, `verify_corpus.py`, the nine files in `corpus/`, the prediction and choices\nin section 1 of the notebook, and this README.\n\n---"
+    },
+    {
+      "id": "S5",
+      "source": "vault/raw/Custom LLM README.md",
+      "section": "Building a Custom LLM — Class 4",
+      "lines": [
+        3,
+        21
+      ],
+      "score": 10.342,
+      "coverage": 0.44,
+      "text": "Training Karpathy's nanoGPT from scratch on a word-token corpus, measuring it with a fixed\n48-case language eval suite before and after training across five experiments, and talking to\nthe result through a terminal chat interface.\n\n**The best model here has 230k parameters, a 48-token context, and trained for 38 seconds on\nsynthetic sentences.** It is not a chat assistant. It continues sentences in the shapes it was shown.\nEverything below reports what it actually did, including where it failed and where my\npredictions were wrong.\n\n| | |\n|---|---|\n| Executed notebook, experiment 1 | [`custom_llm_experiment1_starter.ipynb`](custom_llm_experiment1_starter.ipynb) |\n| Executed notebook, experiment 2 | [`custom_llm_experiment2_extended.ipynb`](custom_llm_experiment2_extended.ipynb) |\n| Executed notebook, experiment 3 | [`custom_llm_experiment3_targeted.ipynb`](custom_llm_experiment3_targeted.ipynb) |\n| Executed notebook, experiment 5 | [`custom_llm_experiment5_capacity.ipynb`](custom_llm_experiment5_capacity.ipynb) |\n| Eval suite (unchanged) | [`evals/language_evals.json`](evals/language_evals.json) |\n| Chat evidence | [screenshot](results/chat-screenshot.png) · [session recording](results/chat-session-recording.txt) · [transcript](results/chat-experiment5.json) |\n\n---"
+    }
+  ],
+  "answer": "Hardware for the Pac-Man agent training was Apple M4 with 10 cores and 16 GB of memory on macOS 15.6.1 [S1]. The device used for the Pac-Man agent was MPS (Apple Silicon GPU) [S1]. For the custom language model experiments, hardware included macOS 15.6.1 and Apple Silicon, with CPU only [S3].",
+  "gate": "passed",
+  "model_called": true,
+  "citation_check": {
+    "insufficient": false,
+    "cited": [
+      1,
+      3
+    ],
+    "invalid": [],
+    "uncited_sentences": [],
+    "unsupported_numbers": [],
+    "status": "PASS"
+  },
+  "stats": {
+    "seconds": 3.21,
+    "prompt_tokens": 2066,
+    "generated_tokens": 86,
+    "tokens_per_second": 54.0,
+    "peak_memory_gb": 4.32
+  },
+  "runtime": {
+    "execution": "local",
+    "model": "mlx-community/gemma-4-e2b-it-4bit",
+    "model_revision": "238767527555cb75a05732a84dff5d6ba0dd6809",
+    "quantization": "4-bit (MLX)",
+    "runtime": "mlx-vlm 0.7.2, mlx 0.32.2",
+    "python": "3.12.14",
+    "os": "macOS 15.6.1",
+    "chip": "Apple M4",
+    "unified_memory_gb": 16
+  },
+  "test": {
+    "id": "test-3",
+    "kind": "connects two sources",
+    "question": "What hardware and device did I use to train the Pac-Man agent and the custom language model?",
+    "expected_sources": [
+      {
+        "file": "vault/raw/Pac-Man DQN README.md",
+        "must_contain": "Apple M4, 10 cores, 16 GB"
+      },
+      {
+        "file": "vault/raw/Custom LLM README.md",
+        "must_contain": "Hardware: macOS 15.6.1, Apple Silicon, CPU only"
+      }
+    ],
+    "expected_answer_keywords": [
+      "M4",
+      "CPU"
+    ],
+    "expect_insufficient": false
+  },
+  "retrieval_check": {
+    "pass": true,
+    "expected": [
+      {
+        "file": "vault/raw/Pac-Man DQN README.md",
+        "must_contain": "Apple M4, 10 cores, 16 GB",
+        "rank": 1
+      },
+      {
+        "file": "vault/raw/Custom LLM README.md",
+        "must_contain": "Hardware: macOS 15.6.1, Apple Silicon, CPU only",
+        "rank": 3
+      }
+    ]
+  },
+  "answer_check": {
+    "pass": true,
+    "detail": "expected facts present, citations valid"
+  },
+  "answer_hash": "c223ebbce5c9",
+  "human_assessment": null,
+  "label": "v2-balanced-refusal-rule"
+}

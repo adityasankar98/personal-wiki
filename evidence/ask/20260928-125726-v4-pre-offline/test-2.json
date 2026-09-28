@@ -1,0 +1,115 @@
+{
+  "mode": "ask",
+  "execution": "local",
+  "question": "Why was one signed-in user of my networking app initially able to see and delete another person's contacts?",
+  "time": "2026-09-28T12:57:33",
+  "passages": [
+    {
+      "id": "S1",
+      "source": "vault/raw/NetworkTracker README.md",
+      "section": "NetworkTracker — Secure Networking Tracker",
+      "lines": [
+        3,
+        13
+      ],
+      "score": 27.244,
+      "coverage": 0.75,
+      "text": "**Live app → [https://frontend-seven-puce-55.vercel.app](https://frontend-seven-puce-55.vercel.app)**\n\nNetworkTracker is a full-stack web application for keeping track of the people you meet while networking. Each user signs up with an email and password, then builds a private contact list — name, company, role, where you met, notes, and a priority tier — which they can create, view, edit, delete, sort, filter, and search. Contacts persist in Neon Postgres and survive a refresh or a new sign-in. The central design concern is ownership: one user must never see or modify another user's contacts, so isolation is enforced twice over — once in the application layer, where every query is scoped to the authenticated user, and again in the database through Postgres Row Level Security. Built for Berkeley's Agentic AI course, Assignment 1.\n\n> **Try it:** sign up with any email and password (no verification required), or use the demo account\n> `browsertest9081@example.com` / `TestPass12345`. To see isolation for yourself, sign up a second\n> account in a private window — its contact list will be empty.\n\n**Backend API:** `https://backend-sigma-five-8590c45c6q.vercel.app` · [`/health`](https://backend-sigma-five-8590c45c6q.vercel.app/health)\n\n---"
+    },
+    {
+      "id": "S2",
+      "source": "vault/raw/NetworkTracker README.md",
+      "section": "Security: Authentication and RLS Ownership > The `app_user` role — why RLS needs it",
+      "lines": [
+        317,
+        332
+      ],
+      "score": 22.385,
+      "coverage": 0.58,
+      "text": "Postgres ignores RLS entirely for any role holding the **`BYPASSRLS`** attribute, and Neon's default `neondb_owner` has it. While the backend connected as the owner, all four policies above were **completely inert**: end-to-end testing found that one signed-in user could read *and delete* another user's contacts. `FORCE ROW LEVEL SECURITY` does not help, because `BYPASSRLS` outranks it. Table *owners* also bypass RLS, so the application role must not own `contacts` either.\n\nThe backend therefore connects as a dedicated least-privilege role:\n\n| Role | `rolsuper` | `rolbypassrls` | Owns `contacts` | Used by the app |\n|---|---|---|---|---|\n| `neondb_owner` | false | **true** | yes | no — migrations only |\n| `app_user` | false | **false** | no | **yes** |\n\nEnforcement was then verified at the database level, independently of the API:\n\n| Session context | Rows visible |\n|---|---|\n| none set | **0** — RLS blocks everything |\n| set to user A | only user A's rows |\n| set to an unknown id | **0** |"
+    },
+    {
+      "id": "S3",
+      "source": "vault/raw/NetworkTracker README.md",
+      "section": "Local Setup > 3. Create the application role",
+      "lines": [
+        186,
+        193
+      ],
+      "score": 20.681,
+      "coverage": 0.42,
+      "text": "The backend must **not** connect as `neondb_owner` — see [Security](#the-app_user-role--why-rls-needs-it) for why this is required rather than optional.\n\n```sql\nCREATE ROLE app_user LOGIN PASSWORD '<choose-a-strong-password>' NOBYPASSRLS;\nGRANT USAGE  ON SCHEMA public, neon_auth              TO app_user;\nGRANT SELECT, INSERT, UPDATE, DELETE ON contacts      TO app_user;\nGRANT SELECT ON neon_auth.session, neon_auth.\"user\"   TO app_user;\n```"
+    }
+  ],
+  "answer": "This occurred because the backend connected as the owner role, which bypassed Row Level Security policies, allowing one signed-in user to read and delete another user's contacts [S2].",
+  "gate": "passed",
+  "model_called": true,
+  "citation_check": {
+    "insufficient": false,
+    "cited": [
+      2
+    ],
+    "invalid": [],
+    "uncited_sentences": [],
+    "unsupported_numbers": [],
+    "status": "PASS"
+  },
+  "stats": {
+    "seconds": 2.87,
+    "prompt_tokens": 1268,
+    "generated_tokens": 71,
+    "tokens_per_second": 65.4,
+    "peak_memory_gb": 4.3,
+    "note": "two model calls (first pass + double-check); seconds is the total"
+  },
+  "rescue": {
+    "raw_output": "Evidence: end-to-end testing found that one signed-in user could read *and delete* another user's contacts [S2].\nAnswer: This occurred because the backend connected as the owner role, which bypassed Row Level Security policies, allowing one signed-in user to read and delete another user's contacts [S2].",
+    "verified_quotes": [
+      "end-to-end testing found that one signed-in user could read *and delete* another user's contacts [S2]."
+    ],
+    "verdict": "accepted: 1 quote(s) verified verbatim in the cited passage"
+  },
+  "runtime": {
+    "execution": "local",
+    "model": "mlx-community/gemma-4-e2b-it-4bit",
+    "model_revision": "238767527555cb75a05732a84dff5d6ba0dd6809",
+    "quantization": "4-bit (MLX)",
+    "runtime": "mlx-vlm 0.7.2, mlx 0.32.2",
+    "python": "3.12.14",
+    "os": "macOS 15.6.1",
+    "chip": "Apple M4",
+    "unified_memory_gb": 16
+  },
+  "test": {
+    "id": "test-2",
+    "kind": "reworded vs the source",
+    "question": "Why was one signed-in user of my networking app initially able to see and delete another person's contacts?",
+    "expected_sources": [
+      {
+        "file": "vault/raw/NetworkTracker README.md",
+        "must_contain": "Postgres ignores RLS entirely for any role holding the"
+      }
+    ],
+    "expected_answer_keywords": [
+      "bypass"
+    ],
+    "expect_insufficient": false
+  },
+  "retrieval_check": {
+    "pass": true,
+    "expected": [
+      {
+        "file": "vault/raw/NetworkTracker README.md",
+        "must_contain": "Postgres ignores RLS entirely for any role holding the",
+        "rank": 2
+      }
+    ]
+  },
+  "answer_check": {
+    "pass": true,
+    "detail": "expected facts present, citations valid"
+  },
+  "answer_hash": "329f775c1640",
+  "human_assessment": null,
+  "label": "v4-pre-offline"
+}

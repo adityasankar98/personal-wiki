@@ -1,0 +1,44 @@
+
+$ ./wiki ingest vault/raw/does-not-exist.md
+error: does-not-exist.md: file not found.
+[exit 1]
+
+$ ./wiki ingest /tmp
+error: /tmp is outside vault/raw/.
+[exit 1]
+
+$ ./wiki ingest README.md
+error: README.md is outside vault/raw/. Copy originals into vault/raw/ (or vault/raw/private/ for private documents) so they are preserved unchanged.
+[exit 1]
+
+$ ./wiki ask anything --mode online
+error: online mode is not implemented. This project runs Gemma locally; omit --mode or use --mode local.
+[exit 2]
+
+$ ./wiki ask What is the capital of France?
+mode=ask · model=Gemma 4 E2B-it, 4-bit MLX (local) · execution=local · history=none · persona=none
+[1/4] retrieved 0 passage(s) from vault/raw/ (BM25)
+[2/4] evidence gate: too weak -> not calling the model
+
+Insufficient evidence: no passage in the wiki's sources matches this question closely enough to answer it.
+[exit 0]
+
+$ ./wiki search reward
+error: No search index yet. Run `./wiki ingest` first.
+[exit 1]
+
+$ ./wiki ask What mean score did the trained agent get?
+mode=ask · model=Gemma 4 E2B-it, 4-bit MLX (local) · execution=local · history=none · persona=none
+[1/4] retrieved 5 passage(s) from vault/raw/ (BM25)
+      S1  vault/raw/Pac-Man DQN README.md:18-29 § Training a Ms. Pac-Man agent with a Deep Q-Network  (score 11.3)
+      S2  vault/raw/Pac-Man DQN README.md:295-301 § One limitation  (score 10.6)
+      S3  vault/raw/Pac-Man DQN README.md:129-136 § What the agent actually sees, does, and is paid for  (score 10.3)
+      S4  vault/raw/Custom LLM README.md:782-789 § 10. Limitation and next experiment  (score 6.4)
+      S5  vault/raw/Custom LLM README.md:655-663 § 8. Chat interface  (score 5.6)
+[2/4] evidence gate: passed -> building prompt (wiki-instructions.md + passages + question)
+[3/4] generating with local Gemma ...
+
+error: The local model is not in the Hugging Face cache. While online, download it once with:
+  .venv/bin/python -c "from huggingface_hub import snapshot_download; snapshot_download('mlx-community/gemma-4-e2b-it-4bit', revision='238767527555cb75a05732a84dff5d6ba0dd6809')"
+Then run offline as normal.
+[exit 1]

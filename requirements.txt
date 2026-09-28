@@ -1,0 +1,6 @@
+# Exact pins (installed and tested on macOS 15.6.1, Apple M4, Python 3.12.14).
+mlx-vlm==0.7.2        # local Gemma inference on Apple Silicon (pulls mlx, transformers, huggingface_hub)
+mlx==0.32.2
+transformers==5.17.0
+pypdf==6.19.0         # optional: PDF sources (local text extraction)
+python-docx==1.2.0    # optional: DOCX sources

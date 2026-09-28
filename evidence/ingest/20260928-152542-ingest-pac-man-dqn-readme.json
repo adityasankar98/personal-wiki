@@ -1,0 +1,29 @@
+{
+  "mode": "ingest",
+  "path": "vault/raw/Pac-Man DQN README.md",
+  "time": "2026-09-28T15:25:42",
+  "runtime": {
+    "execution": "local",
+    "model": "mlx-community/gemma-4-e2b-it-4bit",
+    "model_revision": "238767527555cb75a05732a84dff5d6ba0dd6809",
+    "quantization": "4-bit (MLX)",
+    "runtime": "mlx-vlm 0.7.2, mlx 0.32.2",
+    "python": "3.12.14",
+    "os": "macOS 15.6.1",
+    "chip": "Apple M4",
+    "unified_memory_gb": 16
+  },
+  "elapsed_seconds": 43.9,
+  "gemma_calls": 26,
+  "generation_seconds": 39.1,
+  "counts": {
+    "created": 0,
+    "updated": 1,
+    "unchanged": 7
+  },
+  "new_files": [],
+  "notes_before": 17,
+  "notes_after": 17,
+  "max_rss_gb": 0.82,
+  "query": "Pac-Man DQN README"
+}

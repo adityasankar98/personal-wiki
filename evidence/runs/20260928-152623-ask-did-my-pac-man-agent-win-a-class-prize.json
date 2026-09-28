@@ -1,0 +1,98 @@
+{
+  "mode": "ask",
+  "execution": "local",
+  "question": "Did my Pac-Man agent win a class prize?",
+  "time": "2026-09-28T15:26:17",
+  "passages": [
+    {
+      "id": "S1",
+      "source": "vault/raw/Pac-Man DQN README.md",
+      "section": "Training a Ms. Pac-Man agent with a Deep Q-Network",
+      "lines": [
+        3,
+        16
+      ],
+      "score": 6.929,
+      "coverage": 0.67,
+      "text": "Class 3 assignment. A DQN is trained from raw pixels on `ALE/MsPacman-v5` using the course\nnotebook, and evaluated against an untrained network on five fixed seeds under identical settings.\n\n- **Notebook (executed, with outputs):** [`pacman_dqn.ipynb`](pacman_dqn.ipynb)\n- **Evidence:** [`results/`](results/)\n\n> **A note for the grader on viewing gameplay in the notebook.** The notebook's own gameplay clips\n> are stored as `image/gif` outputs, and **GitHub's static notebook viewer does not render that MIME\n> type** — it prints `<IPython.core.display.Image object>` instead. I verified this is not a problem\n> with the saved file: the GIF data is present in the `.ipynb`, and `nbconvert --to html` drops it\n> the same way, so it affects any run of this notebook rather than this one specifically. The\n> **scores, the training dashboard, and every printed result do render on GitHub.** All 82 gameplay\n> GIFs are additionally saved as files under [`results/demos/`](results/demos/) and embedded\n> throughout this README, where they display correctly."
+    },
+    {
+      "id": "S2",
+      "source": "vault/raw/Pac-Man DQN README.md",
+      "section": "Training a Ms. Pac-Man agent with a Deep Q-Network",
+      "lines": [
+        18,
+        29
+      ],
+      "score": 6.032,
+      "coverage": 0.5,
+      "text": "**Result: mean score over five fixed evaluation seeds went from 492.0 (untrained) to 1360.0\n(trained) — a gain of +868.0, or +176%. All five games improved.**\n\n| | Untrained | Trained |\n|---|---|---|\n| Mean over 5 seeds | 492.0 | **1360.0** |\n\n| Untrained agent | Best trained game |\n|---|---|\n| ![untrained gameplay](results/demos/episode_0000.gif) | ![trained gameplay](results/demos/final_best.gif) |\n\n*Both clips are the first 20 seconds of game time at 4× playback.*"
+    },
+    {
+      "id": "S3",
+      "source": "vault/raw/Pac-Man DQN README.md",
+      "section": "One limitation",
+      "lines": [
+        303,
+        312
+      ],
+      "score": 6.011,
+      "coverage": 0.5,
+      "text": "The direct cause is in the code: **training rewards are clipped to [−1, +1]**. To the gradient, a\n10-point pellet and a 1,600-point ghost chain are the same size. The agent is therefore never taught\nthat ghosts are worth two orders of magnitude more than pellets — reward clipping stabilises\ntraining at the cost of making the agent value-blind to exactly the tactic that separates a good\nMs. Pac-Man player from a mediocre one.\n\nA second, structural limitation worth naming: **five evaluation games is a very small sample.** The\nsame agent scored between 360 and 2,250 on single games during training. Five games with fixed seeds\nmakes runs comparable, but it is not a reliable estimate of true skill, and the ±868 gain should be\nread as \"clearly improved,\" not as a precise measurement."
+    },
+    {
+      "id": "S4",
+      "source": "vault/raw/Custom LLM README.md",
+      "section": "Building a Custom LLM — Class 4",
+      "lines": [
+        3,
+        21
+      ],
+      "score": 2.309,
+      "coverage": 0.17,
+      "text": "Training Karpathy's nanoGPT from scratch on a word-token corpus, measuring it with a fixed\n48-case language eval suite before and after training across five experiments, and talking to\nthe result through a terminal chat interface.\n\n**The best model here has 230k parameters, a 48-token context, and trained for 38 seconds on\nsynthetic sentences.** It is not a chat assistant. It continues sentences in the shapes it was shown.\nEverything below reports what it actually did, including where it failed and where my\npredictions were wrong.\n\n| | |\n|---|---|\n| Executed notebook, experiment 1 | [`custom_llm_experiment1_starter.ipynb`](custom_llm_experiment1_starter.ipynb) |\n| Executed notebook, experiment 2 | [`custom_llm_experiment2_extended.ipynb`](custom_llm_experiment2_extended.ipynb) |\n| Executed notebook, experiment 3 | [`custom_llm_experiment3_targeted.ipynb`](custom_llm_experiment3_targeted.ipynb) |\n| Executed notebook, experiment 5 | [`custom_llm_experiment5_capacity.ipynb`](custom_llm_experiment5_capacity.ipynb) |\n| Eval suite (unchanged) | [`evals/language_evals.json`](evals/language_evals.json) |\n| Chat evidence | [screenshot](results/chat-screenshot.png) · [session recording](results/chat-session-recording.txt) · [transcript](results/chat-experiment5.json) |\n\n---"
+    },
+    {
+      "id": "S5",
+      "source": "vault/raw/NetworkTracker README.md",
+      "section": "Technology Stack",
+      "lines": [
+        104,
+        114
+      ],
+      "score": 2.199,
+      "coverage": 0.17,
+      "text": "| Layer | Choice | Why |\n|---|---|---|\n| Frontend | **React 19 + Vite + TypeScript** | Vite gives near-instant builds and a tiny production bundle; TypeScript catches contract drift between the API client and components at compile time. |\n| Styling | **Tailwind CSS v4** | The brief requires a design system. Tailwind v4 needs no config file, and utility classes keep spacing and colour consistent without a separate stylesheet to drift. |\n| Routing | **React Router v7** | Standard declarative routing; makes the protected-route redirect explicit rather than ad-hoc. |\n| HTTP | **Axios** | A single request interceptor attaches the bearer token to every call, so no component handles auth headers. |\n| Backend | **Node + Express + TypeScript** | The brief requires a separated backend. Express is minimal enough that the request path stays readable, which matters when the security argument depends on it. |\n| Validation | **Zod** | One schema is both the runtime validator and the inferred TypeScript type, so they cannot disagree. |\n| Database | **Neon Postgres** (`@neondatabase/serverless`) | Required by the brief. The HTTP driver suits Vercel's serverless model, where a connection pool cannot be held between invocations. |\n| Auth | **Neon Managed Better Auth** | Required by the brief. Credentials are handled by the hosted service — the app never sees or stores a password. |\n| Testing | **Jest + Supertest** | Fast, zero-config for TypeScript via `ts-jest`. |"
+    }
+  ],
+  "answer": "Insufficient evidence: no information is provided regarding whether the Pac-Man agent won a class prize.",
+  "gate": "passed",
+  "model_called": true,
+  "citation_check": {
+    "insufficient": true,
+    "cited": [],
+    "invalid": [],
+    "uncited_sentences": [],
+    "unsupported_numbers": [],
+    "status": "PASS (insufficient-evidence reply; no citations needed)"
+  },
+  "stats": {
+    "seconds": 1.66,
+    "prompt_tokens": 1798,
+    "generated_tokens": 20,
+    "tokens_per_second": 64.5,
+    "peak_memory_gb": 4.34
+  },
+  "rescue": null,
+  "runtime": {
+    "execution": "local",
+    "model": "mlx-community/gemma-4-e2b-it-4bit",
+    "model_revision": "238767527555cb75a05732a84dff5d6ba0dd6809",
+    "quantization": "4-bit (MLX)",
+    "runtime": "mlx-vlm 0.7.2, mlx 0.32.2",
+    "python": "3.12.14",
+    "os": "macOS 15.6.1",
+    "chip": "Apple M4",
+    "unified_memory_gb": 16
+  }
+}

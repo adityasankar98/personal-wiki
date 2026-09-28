@@ -1,0 +1,117 @@
+{
+  "mode": "ask",
+  "execution": "local",
+  "question": "What grade did I receive for the Pac-Man assignment?",
+  "time": "2026-09-28T16:00:28",
+  "passages": [
+    {
+      "id": "S1",
+      "source": "vault/raw/Custom LLM README.md",
+      "section": "2. Where my predictions were wrong",
+      "lines": [
+        128,
+        136
+      ],
+      "score": 8.311,
+      "coverage": 0.4,
+      "text": "**Wrong #3 — I predicted a `new_wording` regression** from extension material consuming ~49% of\ntraining batches and halving classroom exposure. Instead `new_wording` went 4/8 → 8/8. The\nextra data appears to have taught general function-word structure that transferred back to the\nstarter templates, rather than competing with them for capacity.\n\nI am reporting these because the assignment grades prediction against observation, and three\nconfident, specific, wrong predictions are more informative than a vague one that cannot fail.\n\n---"
+    },
+    {
+      "id": "S2",
+      "source": "vault/raw/Pac-Man DQN README.md",
+      "section": "Where the large files are",
+      "lines": [
+        342,
+        345
+      ],
+      "score": 8.12,
+      "coverage": 0.6,
+      "text": "Model checkpoints (`untrained.pt`, `episode_*.pt`, `trained.pt`, ~6.8 MB each) are **not** committed,\nto keep the repository small. They are kept locally in the run's ZIP archive alongside the\n`pacman_runs/<timestamp>/` folder produced by the notebook. Everything needed to grade the\nexperiment — settings, logs, plots, GIFs, and all evaluation scores — is in [`results/`](results/)."
+    },
+    {
+      "id": "S3",
+      "source": "vault/raw/Pac-Man DQN README.md",
+      "section": "What I expected, and what actually happened",
+      "lines": [
+        153,
+        159
+      ],
+      "score": 5.826,
+      "coverage": 0.6,
+      "text": "And the loss went **up**, not down — from about 0.03 early to a plateau around 0.15 — during exactly\nthe period when play was improving fastest. This is the assignment's warning made concrete. The loss\nhere is a *temporal-difference error*, not a distance from ground truth. As the agent learns to\nsurvive and collect more, the true value of its states genuinely rises, the target network keeps\nbeing refreshed to a stronger network, and so the quantity being minimised is itself growing. A\nfalling loss in this setup could just as easily have meant the agent had settled into a dull,\npredictable policy. **The loss panel is the least informative of the three.**"
+    },
+    {
+      "id": "S4",
+      "source": "vault/raw/Pac-Man DQN README.md",
+      "section": "Training a Ms. Pac-Man agent with a Deep Q-Network",
+      "lines": [
+        3,
+        16
+      ],
+      "score": 5.393,
+      "coverage": 0.6,
+      "text": "Class 3 assignment. A DQN is trained from raw pixels on `ALE/MsPacman-v5` using the course\nnotebook, and evaluated against an untrained network on five fixed seeds under identical settings.\n\n- **Notebook (executed, with outputs):** [`pacman_dqn.ipynb`](pacman_dqn.ipynb)\n- **Evidence:** [`results/`](results/)\n\n> **A note for the grader on viewing gameplay in the notebook.** The notebook's own gameplay clips\n> are stored as `image/gif` outputs, and **GitHub's static notebook viewer does not render that MIME\n> type** — it prints `<IPython.core.display.Image object>` instead. I verified this is not a problem\n> with the saved file: the GIF data is present in the `.ipynb`, and `nbconvert --to html` drops it\n> the same way, so it affects any run of this notebook rather than this one specifically. The\n> **scores, the training dashboard, and every printed result do render on GitHub.** All 82 gameplay\n> GIFs are additionally saved as files under [`results/demos/`](results/demos/) and embedded\n> throughout this README, where they display correctly."
+    },
+    {
+      "id": "S5",
+      "source": "vault/raw/Custom LLM README.md",
+      "section": "9. Reproducing this",
+      "lines": [
+        719,
+        725
+      ],
+      "score": 3.8,
+      "coverage": 0.2,
+      "text": "**Scoring rules** (unchanged from the supplied runner): the model sees only the prompt — never\nthe four choices, never the answer key. It scores 1 when the correct word receives the highest\nnext-token probability among the four choices, 0 otherwise. Ties score 0. Cases with any\nunknown prompt or choice word, or an over-long context, are `out_of_vocabulary` /\n`context_too_long`, score 0 in the all-case rate, and are excluded from scorable accuracy and\ncoverage. A free continuation is generated and saved separately for every case and is **not**\nwhat the score measures."
+    }
+  ],
+  "answer": "Insufficient evidence: the passages do not state what grade was received for the Pac-Man assignment.",
+  "gate": "passed",
+  "model_called": true,
+  "citation_check": {
+    "insufficient": true,
+    "cited": [],
+    "invalid": [],
+    "uncited_sentences": [],
+    "unsupported_numbers": [],
+    "status": "PASS (insufficient-evidence reply; no citations needed)"
+  },
+  "stats": {
+    "seconds": 1.02,
+    "prompt_tokens": 1263,
+    "generated_tokens": 20,
+    "tokens_per_second": 67.3,
+    "peak_memory_gb": 4.32
+  },
+  "rescue": null,
+  "runtime": {
+    "execution": "local",
+    "model": "mlx-community/gemma-4-e2b-it-4bit",
+    "model_revision": "238767527555cb75a05732a84dff5d6ba0dd6809",
+    "quantization": "4-bit (MLX)",
+    "runtime": "mlx-vlm 0.7.2, mlx 0.32.2",
+    "python": "3.12.14",
+    "os": "macOS 15.6.1",
+    "chip": "Apple M4",
+    "unified_memory_gb": 16
+  },
+  "test": {
+    "id": "test-4",
+    "kind": "unsupported (answer not in the wiki)",
+    "question": "What grade did I receive for the Pac-Man assignment?",
+    "expected_sources": [],
+    "expected_answer_keywords": [],
+    "expect_insufficient": true
+  },
+  "retrieval_check": {
+    "pass": true,
+    "expected": []
+  },
+  "answer_check": {
+    "pass": true,
+    "detail": "expected an insufficient-evidence reply: got one"
+  },
+  "answer_hash": "ebeb8e78919a",
+  "human_assessment": "**PASS: correct refusal.** None of the five retrieved passages mentions a grade received. S1 contains the word “grades” in a different sense (“the assignment grades prediction against observation”), a plausible trap for keyword matching, and the model was not misled. The evidence gate did not block this question, because “Pac-Man assignment” matches real passages (as predicted), so the refusal came from the model following rule 4 of `wiki-instructions.md`. My prediction that this test would fail first time was wrong.",
+  "label": "final-check"
+}

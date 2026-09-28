@@ -1,0 +1,10 @@
+{
+  "_note": "Findings from `wiki check` that were reviewed and accepted. Every entry needs a reason. file='*' applies anywhere (the same text is quoted in evidence cards that show retrieved passages).",
+  "allow": [
+    {
+      "file": "*",
+      "match": "browsertest9081@example.com",
+      "reason": "Throwaway demo login for the NetworkTracker app, deliberately published in that project's public README so graders can sign in. It uses the reserved example.com domain and grants access only to an empty demo contact list. The raw source must stay byte-identical, so it is kept and disclosed rather than redacted."
+    }
+  ]
+}

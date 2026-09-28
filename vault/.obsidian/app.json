@@ -1,0 +1,10 @@
+{
+  "showFrontmatter": true,
+  "propertiesInDocument": "visible",
+  "attachmentFolderPath": "attachments",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "wiki",
+  "userIgnoreFilters": [],
+  "showInlineTitle": false,
+  "defaultViewMode": "preview"
+}

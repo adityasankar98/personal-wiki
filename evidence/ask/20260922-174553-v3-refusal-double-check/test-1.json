@@ -1,0 +1,110 @@
+{
+  "mode": "ask",
+  "execution": "local",
+  "question": "What mean score did the trained Ms. Pac-Man agent get on the five evaluation seeds, compared with the untrained agent?",
+  "time": "2026-09-22T17:45:53",
+  "passages": [
+    {
+      "id": "S1",
+      "source": "vault/raw/Pac-Man DQN README.md",
+      "section": "Training a Ms. Pac-Man agent with a Deep Q-Network",
+      "lines": [
+        18,
+        29
+      ],
+      "score": 32.743,
+      "coverage": 0.92,
+      "text": "**Result: mean score over five fixed evaluation seeds went from 492.0 (untrained) to 1360.0\n(trained) — a gain of +868.0, or +176%. All five games improved.**\n\n| | Untrained | Trained |\n|---|---|---|\n| Mean over 5 seeds | 492.0 | **1360.0** |\n\n| Untrained agent | Best trained game |\n|---|---|\n| ![untrained gameplay](results/demos/episode_0000.gif) | ![trained gameplay](results/demos/final_best.gif) |\n\n*Both clips are the first 20 seconds of game time at 4× playback.*"
+    },
+    {
+      "id": "S2",
+      "source": "vault/raw/Pac-Man DQN README.md",
+      "section": "What I expected, and what actually happened > All five evaluation scores",
+      "lines": [
+        163,
+        176
+      ],
+      "score": 24.37,
+      "coverage": 0.83,
+      "text": "Same five seeds, 5% exploration, same 3,000-decision cap, before and after. The baseline is an\nuntrained network, not a random-action agent. Full data: [`results/comparison.json`](results/comparison.json).\n\n| Game | Seed | Before (untrained) | After (trained) | Change |\n|---|---|---|---|---|\n| 1 | 101 | 350 | **1400** | +1050 |\n| 2 | 202 | 500 | **1740** | +1240 |\n| 3 | 303 | 320 | **1240** | +920 |\n| 4 | 404 | 800 | **1510** | +710 |\n| 5 | 505 | 490 | **910** | +420 |\n| **Mean** | | **492.0** | **1360.0** | **+868.0** |\n\nThe agent also survived longer: mean game length rose from 589 to 764 decisions. No game hit the\n3,000-decision time limit in either condition, so every score is a real game-over, not a truncation."
+    },
+    {
+      "id": "S3",
+      "source": "vault/raw/Pac-Man DQN README.md",
+      "section": "One limitation",
+      "lines": [
+        303,
+        312
+      ],
+      "score": 22.072,
+      "coverage": 0.67,
+      "text": "The direct cause is in the code: **training rewards are clipped to [−1, +1]**. To the gradient, a\n10-point pellet and a 1,600-point ghost chain are the same size. The agent is therefore never taught\nthat ghosts are worth two orders of magnitude more than pellets — reward clipping stabilises\ntraining at the cost of making the agent value-blind to exactly the tactic that separates a good\nMs. Pac-Man player from a mediocre one.\n\nA second, structural limitation worth naming: **five evaluation games is a very small sample.** The\nsame agent scored between 360 and 2,250 on single games during training. Five games with fixed seeds\nmakes runs comparable, but it is not a reliable estimate of true skill, and the ±868 gain should be\nread as \"clearly improved,\" not as a precise measurement."
+    }
+  ],
+  "answer": "The mean score for the trained Ms. Pac-Man agent was 1360.0, which was an improvement of +868.0 over the untrained score of 492.0 [S1][S2].",
+  "gate": "passed",
+  "model_called": true,
+  "citation_check": {
+    "insufficient": false,
+    "cited": [
+      1,
+      2
+    ],
+    "invalid": [],
+    "uncited_sentences": [],
+    "unsupported_numbers": [],
+    "status": "PASS"
+  },
+  "stats": {
+    "seconds": 2.28,
+    "prompt_tokens": 1106,
+    "generated_tokens": 51,
+    "tokens_per_second": 52.2,
+    "peak_memory_gb": 4.2
+  },
+  "rescue": null,
+  "runtime": {
+    "execution": "local",
+    "model": "mlx-community/gemma-4-e2b-it-4bit",
+    "model_revision": "238767527555cb75a05732a84dff5d6ba0dd6809",
+    "quantization": "4-bit (MLX)",
+    "runtime": "mlx-vlm 0.7.2, mlx 0.32.2",
+    "python": "3.12.14",
+    "os": "macOS 15.6.1",
+    "chip": "Apple M4",
+    "unified_memory_gb": 16
+  },
+  "test": {
+    "id": "test-1",
+    "kind": "direct, one source",
+    "question": "What mean score did the trained Ms. Pac-Man agent get on the five evaluation seeds, compared with the untrained agent?",
+    "expected_sources": [
+      {
+        "file": "vault/raw/Pac-Man DQN README.md",
+        "must_contain": "Result: mean score over five fixed evaluation seeds went from 492.0"
+      }
+    ],
+    "expected_answer_keywords": [
+      "1360",
+      "492"
+    ],
+    "expect_insufficient": false
+  },
+  "retrieval_check": {
+    "pass": true,
+    "expected": [
+      {
+        "file": "vault/raw/Pac-Man DQN README.md",
+        "must_contain": "Result: mean score over five fixed evaluation seeds went from 492.0",
+        "rank": 1
+      }
+    ]
+  },
+  "answer_check": {
+    "pass": true,
+    "detail": "expected facts present, citations valid"
+  },
+  "answer_hash": "aac3ab42f7b9",
+  "human_assessment": null,
+  "label": "v3-refusal-double-check"
+}
